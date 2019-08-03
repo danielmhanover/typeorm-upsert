@@ -17,12 +17,14 @@ export default async <T>(
     EntityType: ClassType<T>,
     obj: T,
     primary_key: string,
-    key_naming_transform: (k: string) => string = _.identity,
-    do_not_upsert: string[] = [],
+    opts?: {
+        key_naming_transform: (k: string) => string,
+        do_not_upsert: string[],
+    }
 ): Promise<T> => {
-    const keys: string[] = _.difference(_.keys(obj), do_not_upsert)
+    const keys: string[] = _.difference(_.keys(obj), opts ? opts.do_not_upsert : [])
     const setter_string =
-        keys.map(k => `${key_naming_transform(k)} = :${k}`)
+        keys.map(k => `${opts ? opts.key_naming_transform(k) : k} = :${k}`)
 
     const qb = EntityType.createQueryBuilder()
         .insert()
