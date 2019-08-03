@@ -10,13 +10,17 @@ import { SnakeCase } from 'snake-case'
 
 const post: Post = { ... }
 
-Upsert(
-    Post, 
-    post,
-    "id",          // primary-key to upsert on
-    SnakeCase,     // arbitrarily transform keys before UPSERT
-    ['created_at'] // exclude non-nullable keys from UPDATE that are required in the event of an INSERT operation
-)
+(async () => {
+    const upserted_post = await Upsert(
+        Post, 
+        post,
+        "id",          // primary-key to upsert on
+        SnakeCase,     // arbitrarily transform keys before UPSERT
+        ['created_at'] // exclude non-nullable keys from UPDATE that are required in the event of an INSERT operation
+    )
+    
+    console.log(upserted_post) // prints the finished version of `Post`
+})
 ```
 
 Tested with PostgreSQL 9.5+. Contributors welcome.
