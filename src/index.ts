@@ -16,6 +16,7 @@ type ClassType<T> = {
 export default async <T>(
     EntityType: ClassType<T>,
     obj: T,
+    primary_key: string,
     key_naming_transform: (k: string) => string = _.identity,
     do_not_upsert: string[] = [],
 ): Promise<T> => {
@@ -26,7 +27,7 @@ export default async <T>(
     const qb = EntityType.createQueryBuilder()
         .insert()
         .values(obj)
-        .onConflict(`("key") DO UPDATE SET ${setter_string}`)
+        .onConflict(`("${primary_key}") DO UPDATE SET ${setter_string}`)
 
     keys.forEach(k => {
         qb.setParameter(k, (obj as any)[k])
