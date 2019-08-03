@@ -10,7 +10,7 @@
     "test": "test"
   },
   "prepare" : "npm run build",
-  “files”: [“lib/**/*”],
+  "files": ["lib/**/*"],
   "scripts": {
     "version" : "npm run format && git add -A src",
     "postversion" : "git push && git push --tags",
