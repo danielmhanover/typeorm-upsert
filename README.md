@@ -3,7 +3,7 @@
 Say you have a TypeORM entity `Post` and you want to atomically upsert:
 
 
-```
+```typescript
 import { Upsert } from 'typeorm-upsert'
 import { SnakeCase } from 'snake-case'
 
