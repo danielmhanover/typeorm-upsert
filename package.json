@@ -1,25 +1,30 @@
 {
   "name": "typeorm-upsert",
-  "main": "lib/index.js",
+  "main": "index.ts",
   "types": "lib/index.d.ts",
-  "author": "Daniel Hanover",
+  "author": "",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
   "directories": {
     "test": "test"
   },
-  "prepare" : "npm run build",
-  "files": ["lib/**/*"],
+  "prepare": "npm run build",
+  "files": [
+    "lib/**/*"
+  ],
   "scripts": {
-    "version" : "npm run format && git add -A src",
-    "postversion" : "git push && git push --tags",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build" : "tsc"
+    "build": "tsc"
   },
-  "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/lodash": "^4.14.136",
+    "typeorm": "^0.2.18",
     "typescript": "^3.5.3"
+  },
+  "dependencies": {
+    "lodash": "^4.17.15"
   }
 }
