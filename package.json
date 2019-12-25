@@ -21,7 +21,6 @@
   "license": "ISC",
   "devDependencies": {
     "@types/lodash": "^4.14.136",
-    "typeorm": "^0.2.18",
     "typescript": "^3.5.3"
   },
   "dependencies": {

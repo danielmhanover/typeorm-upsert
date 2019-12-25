@@ -1,10 +1,4 @@
-import { BaseEntity, ObjectType, QueryBuilder } from 'typeorm'
 import _ from 'lodash'
-
-type ClassType<T> = {
-    new (): T
-    createQueryBuilder<T>(this: ObjectType<T>, alias?: string): QueryBuilder<T>;
-}
 
 /*
  * EntityType - TypeORM Entity
@@ -14,7 +8,7 @@ type ClassType<T> = {
  * the row does not already exist but you do not want to overwrite this field if it already exists
  */
 export default async <T>(
-    EntityType: ClassType<T>,
+    EntityType: T,
     obj: T,
     primary_key: string,
     opts?: {
@@ -25,8 +19,7 @@ export default async <T>(
     const keys: string[] = _.difference(_.keys(obj), opts ? opts.do_not_upsert : [])
     const setter_string =
         keys.map(k => `${opts ? opts.key_naming_transform(k) : k} = :${k}`)
-
-    const qb = EntityType.createQueryBuilder()
+    const qb = (EntityType as any).createQueryBuilder()
         .insert()
         .values(obj)
         .onConflict(`("${primary_key}") DO UPDATE SET ${setter_string}`)
