@@ -24,7 +24,7 @@ export default async <T>(
 ): Promise<T> => {
     const keys: string[] = _.difference(_.keys(obj), opts ? opts.do_not_upsert : [])
     const setter_string =
-        keys.map(k => `${opts ? opts.key_naming_transform(k) : k} = :${k}`)
+        keys.map(k => `"${opts ? opts.key_naming_transform(k) : k}" = :${k}`)
 
     const qb = EntityType.createQueryBuilder()
         .insert()
