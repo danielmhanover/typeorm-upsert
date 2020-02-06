@@ -1,8 +1,8 @@
 {
   "name": "typeorm-upsert",
-  "main": "index.ts",
+  "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "author": "",
+  "author": "Daniel Hanover",
   "version": "1.0.0",
   "description": "",
   "directories": {
@@ -16,7 +16,8 @@
     "version": "npm run format && git add -A src",
     "postversion": "git push && git push --tags",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc"
+    "build": "tsc",
+    "prepublish": "tsc"
   },
   "license": "ISC",
   "devDependencies": {
