@@ -27,5 +27,9 @@
   },
   "dependencies": {
     "lodash": "^4.17.15"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/danielmhanover/typeorm-upsert"
   }
 }
