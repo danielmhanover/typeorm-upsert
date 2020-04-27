@@ -18,8 +18,12 @@ export async function TypeOrmUpsert<T>(
         doNotUpsert?: string[];
     },
 ): Promise<T[]> {
-    options.keyNamingTransform = options.keyNamingTransform || ((k) => k);
-    const keys: string[] = _.difference(_.keys(_.isArray(object) ? object[0] : object), options.doNotUpsert || []);
+    const defaultOptions = {
+        keyNamingTransform: (k) => k,
+        doNotUpsert:[]
+    }
+    options = options ? options : defaultOptions
+    const keys: string[] = _.difference(_.keys(_.isArray(object) ? object[0] : object), options.doNotUpsert);
     const setterString = keys.map((k) => `${options.keyNamingTransform(k)} = excluded.${k}`);
     const onConflict = `("${conflictKey}") DO UPDATE SET ${setterString.join(',')}`;
     const qb = repository.createQueryBuilder().insert().values(object).onConflict(onConflict);
