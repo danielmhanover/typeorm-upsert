@@ -18,14 +18,19 @@ export async function TypeOrmUpsert<T>(
         doNotUpsert?: string[];
     },
 ): Promise<T[]> {
-    const defaultOptions = {
-        keyNamingTransform: (k) => k,
-        doNotUpsert:[]
-    }
-    options = options ? options : defaultOptions
-    const keys: string[] = _.difference(_.keys(_.isArray(object) ? object[0] : object), options.doNotUpsert);
-    const setterString = keys.map((k) => `${options.keyNamingTransform(k)} = excluded.${k}`);
-    const onConflict = `("${conflictKey}") DO UPDATE SET ${setterString.join(',')}`;
+    options = options ? options : {};
+    const keyNamingTransform = options.keyNamingTransform || ((k) => k);
+    const doNotUpsert = options.doNotUpsert || [];
+    const isCamelCase = (k:string) => /^[a-z]+[A-Z]/.test(k);
+    const sampleObject = _.isArray(object) ? object[0] : object;
+    const keys: string[] = _.difference(_.keys(sampleObject), doNotUpsert);
+    const setterString = keys.map((k) => {
+        if (isCamelCase(k)) {
+            return `"${keyNamingTransform(k)}"=EXCLUDED."${k}"`;
+        }
+        return `${keyNamingTransform(k)}=EXCLUDED.${k}`;
+    });
+    const onConflict = `("${conflictKey}") DO UPDATE SET ${setterString.join(' , ')}`;
     const qb = repository.createQueryBuilder().insert().values(object).onConflict(onConflict);
     return (await qb.returning('*').execute()).raw;
 }
